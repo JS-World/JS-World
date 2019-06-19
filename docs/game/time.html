@@ -1,0 +1,93 @@
+<html>
+ <head>
+  <style>
+.a {
+  position :absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+},
+p {
+  </style>
+  <meta charset="UTF-8">
+  <title>時間当てゲーム</title>
+  <script type="text/javascript">
+   var difficulty = 1;
+   window.onload = function(){toMain();}
+   function toMain(){
+    document.getElementById("display").innerHTML = '<font size="50px">時間当てゲーム</font><br><font size="3px">説明:設定した秒数を何もない状態で当てるゲームです。<br><br>難易度:<br> かんたん: 小数第1位を切り捨てし1秒単位で当てます。<br> ふつう: 小数第2位を切り捨てし、小数第1位まで当てます。<br> むずかしい: 小数第2位を切り捨てし、小数第1位まで当てます。 </font><br><font size="5px"><p onclick="toSettings()">クリックしてゲームを開始する</p></font>';
+   }
+   function toSettings(){
+    document.getElementById("display").innerHTML = '<font size="50px">設定</font><br><font size="5px">難易度<br><p style="display:inline;" onclick="easy()">◀️</p><p id="diff" style="display:inline;">Loading</p><p onclick="hard()" style="display:inline;">▶️</p><br><br>目標秒数<br> <input type="input" id="timesetting" size="10" value="10" style="font-size:25px;"> </font><br><font size="5px"><p onClick="start()">スタート！</p></font>';
+    if(difficulty == 0){
+     document.getElementById("diff").innerHTML = "かんたん";
+    }else if(difficulty == 1){
+     document.getElementById("diff").innerHTML = "ふつう";
+    }else if(difficulty == 2){
+     document.getElementById("diff").innerHTML = "むずかしい";
+    }
+   }
+function easy(){
+ if(difficulty > 0){
+  difficulty = difficulty - 1;
+    if(difficulty == 0){
+     document.getElementById("diff").innerHTML = "かんたん";
+    }else if(difficulty == 1){
+     document.getElementById("diff").innerHTML = "ふつう";
+    }
+ }
+}
+function hard(){
+ if(difficulty < 2){
+  difficulty = difficulty + 1;
+    if(difficulty == 1){
+     document.getElementById("diff").innerHTML = "ふつう";
+    }else if(difficulty == 2){
+     document.getElementById("diff").innerHTML = "むずかしい";
+    }
+ }
+}
+/*
+function start(){
+ var time = document.getElementById("timesetting").value;
+  if(time.search(/?[0-9]+(\.[0-9]+)?$/) == 0 /*&& time != 0*/){
+   /*if(difficulty == 0){
+    if(time.match(/./)){
+     alert("かんたんモードでの時間設定は整数のみ設定できます");
+    }else{
+     countstart();
+    }
+   }else if(difficulty == 1){
+    var time2 = time * 10;
+     if(time2.match(/./)){
+      alert("ふつうモードでの時間設定は小数第1位まで設定できます");
+     }else{
+      countstart();
+     }
+   }else if(difficulty == 2){
+    var time2 = time * 100;
+    if(time2.match(/./)){
+     alert("むずかしいモードでの時間設定は小数第2位まで設定できます");
+    }else{
+     countstart();
+    }
+   }
+}else{
+alert("正しい数値を入力してください。");
+}
+}
+*/
+function countdown(){
+ alert("作成途中");
+}
+  </script>
+ </head>
+ <body>
+  <div class="a">
+   <p id="display">
+    読み込み中です。<br>しばらく経っても読み込まれない場合は、JavaScriptがオンになっているかを確かめてください。
+   </p>
+  </div>
+ </body>
+</html>
