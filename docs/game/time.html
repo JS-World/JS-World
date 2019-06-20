@@ -14,13 +14,18 @@ p {
   <title>時間当てゲーム</title>
   <script type="text/javascript">
    var difficulty = 1;
+   var p = 0;
+   var id;
+   var sunix;
    window.onload = function(){toMain();}
    function toMain(){
     document.getElementById("display").innerHTML = '<font size="50px">時間当てゲーム</font><br><font size="3px">説明:設定した秒数を何もない状態で当てるゲームです。<br><br>難易度:<br> かんたん: 小数第1位を切り捨てし1秒単位で当てます。<br> ふつう: 小数第2位を切り捨てし、小数第1位まで当てます。<br> むずかしい: 小数第2位を切り捨てし、小数第1位まで当てます。 </font><br><font size="5px"><p onclick="toSettings()">クリックしてゲームを開始する</p></font>';
+    p = 0;
    }
    function toSettings(){
     document.getElementById("display").innerHTML = '<font size="50px">設定</font><br><font size="5px">難易度<br><p style="display:inline;" onclick="easy()">◀️</p><p id="diff" style="display:inline;">Loading</p><p onclick="hard()" style="display:inline;">▶️</p><br><br>目標秒数<br> <input type="input" id="timesetting" size="10" value="10" style="font-size:25px;"> </font><br><font size="5px"><p onClick="start()">スタート！</p></font>';
-    if(difficulty == 0){
+    p = 1;
+   if(difficulty == 0){
      document.getElementById("diff").innerHTML = "かんたん";
     }else if(difficulty == 1){
      document.getElementById("diff").innerHTML = "ふつう";
@@ -49,11 +54,12 @@ function hard(){
  }
 }
 function start(){
- var time = document.getElementById("timesetting").value;
+ if(p == 1){
+ var time = document.getElementById("timesetting").value * 1;
  var time2 = time;
-  if(time.search(/[0-9]+(\.[0-9]+)?$/) == 0 && time != 0){
+  if(String(time).search(/[0-9]+(\.[0-9]+)?$/) == 0 && time != 0){
    if(difficulty == 0){
-    if(time.match(/\./)){
+    if(String(time).match(/\./)){
      alert("かんたんモードでの時間設定は整数のみ設定できます");
     }else{
      countstart();
@@ -76,9 +82,21 @@ function start(){
 }else{
 alert("正しい数値を入力してください。");
 }
+}else{
+ countstart();
+}
 }
 function countstart(){
- alert("作成途中");
+ document.getElementById("display").innerHTML = '<font size="50px">ゲームは<br><p id="startcount" style="display:inline;">3</p>秒後に<br>開始されます。</font>';
+ p = 3;
+ sunix = new Date() + 3000;
+     var startcount = function(){
+      var count = sunix - new Date();
+      if(count > 0){
+       document.getElementById("startcount").innerHTML = count;
+      }
+     };
+     id = setInterval(startcount, 1);
 }
   </script>
  </head>
