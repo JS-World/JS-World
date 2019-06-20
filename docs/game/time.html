@@ -17,13 +17,14 @@ p {
    var p = 0;
    var id;
    var sunix;
+   var timesetting = 10;
    window.onload = function(){toMain();}
    function toMain(){
     document.getElementById("display").innerHTML = '<font size="50px">時間当てゲーム</font><br><font size="3px">説明:設定した秒数を何もない状態で当てるゲームです。<br><br>難易度:<br> かんたん: 小数第1位を切り捨てし1秒単位で当てます。<br> ふつう: 小数第2位を切り捨てし、小数第1位まで当てます。<br> むずかしい: 小数第2位を切り捨てし、小数第1位まで当てます。 </font><br><font size="5px"><p onclick="toSettings()">クリックしてゲームを開始する</p></font>';
     p = 0;
    }
    function toSettings(){
-    document.getElementById("display").innerHTML = '<font size="50px">設定</font><br><font size="5px">難易度<br><p style="display:inline;" onclick="easy()">◀️</p><p id="diff" style="display:inline;">Loading</p><p onclick="hard()" style="display:inline;">▶️</p><br><br>目標秒数<br> <input type="input" id="timesetting" size="10" value="10" style="font-size:25px;"> </font><br><font size="5px"><p onClick="start()">スタート！</p></font>';
+    document.getElementById("display").innerHTML = '<font size="50px">設定</font><br><font size="5px">難易度<br><p style="display:inline;" onclick="easy()">◀️</p><p id="diff" style="display:inline;">Loading</p><p onclick="hard()" style="display:inline;">▶️</p><br><br>目標秒数<br> <input type="input" id="timesetting" size="10" value="' + timesetting + '" style="font-size:25px;"> </font><br><font size="5px"><p onClick="starting()">スタート！</p></font>';
     p = 1;
    if(difficulty == 0){
      document.getElementById("diff").innerHTML = "かんたん";
@@ -38,8 +39,14 @@ function easy(){
   difficulty = difficulty - 1;
     if(difficulty == 0){
      document.getElementById("diff").innerHTML = "かんたん";
+     if(document.getElementById("timesetting").value.search(/[0-9]+(\.[0-9]+)?$/) == 0){
+      document.getElementById("timesetting").value = Math.floor(document.getElementById("timesetting").value);
+     }
     }else if(difficulty == 1){
      document.getElementById("diff").innerHTML = "ふつう";
+     if(document.getElementById("timesetting").value.search(/[0-9]+(\.[0-9]+)?$/) == 0){
+      document.getElementById("timesetting").value = Math.floor(document.getElementById("timesetting").value * 10) / 10;
+     }
     }
  }
 }
@@ -53,7 +60,7 @@ function hard(){
     }
  }
 }
-function start(){
+function starting(){
  if(p == 1){
  var time = document.getElementById("timesetting").value * 1;
  var time2 = time;
@@ -62,6 +69,7 @@ function start(){
     if(String(time).match(/\./)){
      alert("かんたんモードでの時間設定は整数のみ設定できます");
     }else{
+     timesetting = time;
      countstart();
     }
    }else if(difficulty == 1){
@@ -69,6 +77,7 @@ function start(){
      if(String(time2).match(/\./)){
       alert("ふつうモードでの時間設定は小数第1位まで設定できます");
      }else{
+      timesetting = time;
       countstart();
      }
    }else if(difficulty == 2){
@@ -76,6 +85,7 @@ function start(){
     if(String(time2).match(/\./)){
      alert("むずかしいモードでの時間設定は小数第2位まで設定できます");
     }else{
+     timesetting = time;
      countstart();
     }
    }
@@ -87,16 +97,79 @@ alert("正しい数値を入力してください。");
 }
 }
 function countstart(){
- document.getElementById("display").innerHTML = '<font size="50px">ゲームは<br><p id="startcount" style="display:inline;">3</p>秒後に<br>開始されます。</font>';
+ document.getElementById("display").innerHTML = '<font size="50px">ゲームは<br><p id="startcount" style="display:inline;">3</p>秒後に<br>開始されます</font>';
  p = 3;
- sunix = new Date() + 3000;
+ sunix = Date.now() + 3000;
      var startcount = function(){
-      var count = sunix - new Date();
-      if(count > 0){
-       document.getElementById("startcount").innerHTML = count;
+      var countdown = sunix - Date.now();
+      if(countdown > 0){
+       document.getElementById("startcount").innerHTML = Math.ceil(countdown / 1000);
+      }else{
+       clearInterval(id);
+       start();
       }
      };
      id = setInterval(startcount, 1);
+}
+function start(){
+ var d;
+ if(difficulty == 0){
+  d = "かんたん";
+ }else if(difficulty == 1){
+  d = "ふつう";
+ }else if(difficulty == 2){
+  d = "むずかしい";
+ }
+ document.getElementById("display").innerHTML = '<font size="5px">'+ d + ' | ' + timesetting +'秒</font><br><font size="20px"><p id="timer" style="display:inline;" style="display:inline;"></p></font><br><font size="5px"><p onClick="stop()" style="display:inline;">ストップ！</p></font>';
+ p = 4;
+ sunix = Date.now();
+     var timer = function(){
+ var count = Math.floor(((Date.now() - sunix) / 1000) * 100) / 100;
+ if(difficulty == 1){
+  count = Math.floor(((Date.now() - sunix) / 1000) * 10) / 10;
+ }else if(difficulty == 0){
+  count = Math.floor(((Date.now() - sunix) / 1000));
+ }
+      if(count < 5){
+        if(difficulty == 2 && String(count).match(/\./) == null){
+         document.getElementById("timer").innerHTML = count + ".00";
+        }else if(difficulty == 1 && String(count).match(/\./) == null){
+         document.getElementById("timer").innerHTML = count + ".0";
+        }else if(difficulty == 2 && String(count).split("\.")[1].length < 2){
+         document.getElementById("timer").innerHTML = count + "0";
+        }else{
+         document.getElementById("timer").innerHTML = count;
+        }
+      }else{
+       document.getElementById("timer").innerHTML = Math.round(Math.random() * 100000);
+      }
+     };
+     id = setInterval(timer, 1);
+}
+function stop(){
+ clearInterval(id);
+ p = 5;
+ var result = Math.floor(((Date.now() - sunix) / 1000) * 100) / 100;
+ if(difficulty == 1){
+  result = Math.floor(((Date.now() - sunix) / 1000) * 10) / 10;
+ }else if(difficulty == 0){
+  result = Math.floor(((Date.now() - sunix) / 1000));
+ }
+ document.getElementById("display").innerHTML = '<font size="10px">結果</font><br><font size="7px">目標: ' + timesetting + '秒 <br>難易度: <p id="diff" style="display:inline;"></p><br>あなたの秒数: ' + result + '<br>誤差: <p id="result" style="display:inline;"></p></font><br><br><font size="5px"><p onClick="countstart()" style="display:inline;">やり直す</p><br><p onClick="toSettings()" style="display:inline;">設定</p><br><p onClick="toMain()" style="display:inline;">最初に戻る</p> </font>';
+   if(difficulty == 0){
+     document.getElementById("diff").innerHTML = "かんたん";
+    }else if(difficulty == 1){
+     document.getElementById("diff").innerHTML = "ふつう";
+    }else if(difficulty == 2){
+     document.getElementById("diff").innerHTML = "むずかしい";
+    }
+   if(timesetting == result){
+     document.getElementById("result").innerHTML = "ぴったり！";
+    }else if(timesetting > result){
+     document.getElementById("result").innerHTML = timesetting - result +"秒早い";
+    }else if(timesetting < result){
+     document.getElementById("result").innerHTML = result - timesetting +"秒遅い";
+    }
 }
   </script>
  </head>
