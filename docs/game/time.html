@@ -28,7 +28,7 @@
 			p = 0;
 		}
 		function toSettings(){
-			document.getElementById("display").innerHTML = '<font size="50px">設定</font><br><font size="5px">難易度<br><p style="display:inline;" onclick="easy()" title="難易度を一つ下げる (Left-Arrowでも可能)">◀️</p><p id="diff" style="display:inline;" title="設定中の難易度">Loading</p><p onclick="hard()" style="display:inline;" title="難易度を一つ上げる (Right-Arrowでも可能)">▶️</p><br><br>目標秒数<br> <input type="input" id="timesetting" size="10" value="' + timesetting + '" style="font-size:25px;" title="難易度がかんたんの場合は自然数のみ、ふつうの場合は小数第1位、むずかしいの場合は小数第2位まで (Up-Arrowで+1、Up-Arrow+Shiftで+5、Down-Arrowで-1、Down-Arrow+Shiftで-5)"> </font><br><font size="5px"><p onClick="starting()" title="ゲームスタート">スタート！</p></font>';
+			document.getElementById("display").innerHTML = '<font size="50px">設定</font><br><font size="5px">難易度<br><p style="display:inline;" onclick="easy()" title="難易度を一つ下げる (Left-Arrowでも可能)">◀️</p><p id="diff" style="display:inline;" title="設定中の難易度">Loading</p><p onclick="hard()" style="display:inline;" title="難易度を一つ上げる (Right-Arrowでも可能)">▶️</p><br><br>目標秒数<br> <input type="input" id="timesetting" size="10" value="' + timesetting + '" style="font-size:25px;" title="難易度がかんたんの場合は自然数のみ、ふつうの場合は小数第1位、むずかしいの場合は小数第2位まで (Up-Arrowで+1、Up-Arrow+Shiftで+5、Down-Arrowで-1、Down-Arrow+Shiftで-5)"> </font><br><font size="5px"><p onClick="starting()" title="ゲームスタート (スペースキーでも可)">スタート！</p></font>';
 			p = 1;
 			if(difficulty == 0){
 				document.getElementById("diff").innerHTML = "かんたん";
@@ -201,7 +201,7 @@
 				if(p == 0){
 					toSettings();
 				}else if(p == 1){
-					if(event.keyCode == 13){
+					if(event.keyCode == 32){
 						countstart();
 					}
 				}else if(p == 4){
