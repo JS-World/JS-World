@@ -201,7 +201,9 @@
 				if(p == 0){
 					toSettings();
 				}else if(p == 1){
-					countstart();
+					if(event.keyCode == 13){
+						countstart();
+					}
 				}else if(p == 4){
 					stop();
 				}
