@@ -11,7 +11,7 @@
 p {
   </style>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=0.8">
+  <meta name="viewport" content="width=device-width,initial-scale=0.5">
   <title>時間当てゲーム</title>
   <script type="text/javascript">
    var difficulty = 1;
@@ -167,10 +167,13 @@ function stop(){
    if(timesetting == result){
      document.getElementById("result").innerHTML = "ぴったり！";
     }else if(timesetting > result){
-     document.getElementById("result").innerHTML = timesetting - result +"秒早い";
+     document.getElementById("result").innerHTML = Math.floor((timesetting - result) * 100) / 100 +"秒早い";
     }else if(timesetting < result){
-     document.getElementById("result").innerHTML = result - timesetting +"秒遅い";
+     document.getElementById("result").innerHTML = Math.floor((result - timesetting) * 100) / 100 +"秒遅い";
     }
+}
+element.onkeydown = function(event){
+  alert(event.keyCode);
 }
   </script>
  </head>
