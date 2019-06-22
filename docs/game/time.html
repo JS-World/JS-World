@@ -24,7 +24,7 @@
 		var timesetting = 10;
 		window.onload = function(){toMain();}
 		function toMain(){
-			document.getElementById("display").innerHTML = '<font size="50px">時間当てゲーム</font><br><font size="3px">説明:設定した秒数を何もない状態で当てるゲームです。<br><br>難易度:<br> かんたん: 小数第1位を切り捨てし1秒単位で当てます。<br> ふつう: 小数第2位を切り捨てし、小数第1位まで当てます。<br> むずかしい: 小数第2位を切り捨てし、小数第1位まで当てます。 </font><br><font size="5px"><p onclick="toSettings()" title="クリックしてゲームを開始する (スペースキ,エンターキーでも可)">クリックしてゲームを開始する</p></font>';
+			document.getElementById("display").innerHTML = '<font size="50px">時間当てゲーム</font><br><font size="3px">説明:設定した秒数を何もない状態で当てるゲームです。<br><br>難易度:<br> かんたん: 小数第1位を切り捨てし1秒単位で当てます。<br> ふつう: 小数第2位を切り捨てし、小数第1位まで当てます。<br> むずかしい: 小数第3位を切り捨てし、小数第2位まで当てます。 </font><br><font size="5px"><p onclick="toSettings()" title="クリックしてゲームを開始する (スペースキ,エンターキーでも可)">クリックしてゲームを開始する</p></font>';
 			p = 0;
 		}
 		function toSettings(){
