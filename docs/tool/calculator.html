@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head>
 	<style>
 		.a {
@@ -13,163 +13,182 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.5">
 	<title>正確な計算</title>
 	<script type="text/javascript">
-		window.onload = function(){toMain();}
-		function toMain(){
-			document.getElementById("display").innerHTML = '<input name="a" type="radio" value="1" />作成中。自然数の足し算、負の数同士の引き算のみ対応<br>順番に計算する<input name="a" type="radio" value="2"/>四則計算のルールに従う(乗法、除法を先に計算する)<br><input type="input" id="b" size="20" value="" style="font-size:25px;"><br><p onclick="check();">計算</p>';
-		}
+	window.onload = function() {
+		toMain();
+}
 
-		function check(){
-			document.getElementById("status").innerHTML = "誤りがないか確認中です...";
-			document.getElementById("result").innerHTML = "";
-			var value = String(document.getElementById("b").value);
-			if(value.search(/^[0-9\.\+\-\*\/÷×\(\)\{\}\[\]]*$/) == 0){
-				if(value.match(/^[\*\×\/\÷]/)){
-					document.getElementById("status").innerHTML = "";
-					document.getElementById("result").innerHTML = '<font color="red">最初に*,×,/,÷が来ることは出来ません</font>';
-				}else{
-					if(value.match(/[\+\-\/\*\×\÷]+[\+\-\/\*\×\÷\)\}\]]+/)){
+function toMain() {
+		document.getElementById("display").innerHTML = '<input name="a" type="radio" value="1" />作成中。自然数の足し算、負の数同士の引き算のみ対応<br>順番に計算する<input name="a" type="radio" value="2"/>四則計算のルールに従う(乗法、除法を先に計算する)<br><input type="input" id="b" size="20" value="" style="font-size:25px;"><br><p onclick="check();">計算</p>';
+}
+
+function check() {
+		document.getElementById("status").innerHTML = "誤りがないか確認中です...";
+		document.getElementById("result").innerHTML = "";
+		var value = String(document.getElementById("b").value);
+		if (value.search(/^[0-9\.\+\-\*\/÷×\(\)\{\}\[\]]*$/) == 0) {
+				if (value.match(/^[\*\×\/\÷]/)) {
 						document.getElementById("status").innerHTML = "";
-						document.getElementById("result").innerHTML = '<font color="red">計算記号が連続になっている、もしくは閉じ括弧に向けて計算記号が当てられている箇所が存在します。</font>';
-					}else{
-						var numbers = value.split(/\+|\-|\*|\/|÷|×|\(|\)|\[|\]|\{|\}/);
-						var i = 0;
-						var errors = [];
-						numbers.forEach(function (number, index) {
-							if(!(number.search(/^[0-9]+(\.[0-9]+)?$/) == 0 || number == "")){
-								errors.push(number);
-							}
-							if(++i == numbers.length){
-								if(errors.length > 0){
-									document.getElementById("status").innerHTML = "";
-									document.getElementById("result").innerHTML = '<font color="red">不正な数字が含まれています</font><br>' + errors.join(", ");
-								}else{
-									if((value.match(/\[/g) || [] ).length == (value.match(/\]/g) || []).length){
-										if((value.match(/\{/g) || [] ).length == (value.match(/\}/g) || []).length){
-											if((value.match(/\(/g) || [] ).length == (value.match(/\)/g) || [] ).length){
-												var brackets = value.replace(/[0-9\.\+\-\/\*\×\÷]*/g, "");
-												var b1 = value.replace(/[0-9\.\+\-\/\*\×\÷\{\}\[\]]*/g, "");
-												var b2 = value.replace(/[0-9\.\+\-\/\*\×\÷\(\)\[\]]*/g, "");
-												var b3 = value.replace(/[0-9\.\+\-\/\*\×\÷\(\)\{\}]*/g, "");
-												if(brackets.match(/\[[\}\)]/) || brackets.match(/\{[\]\)\[]/) || brackets.match(/\([\}\}\{\{]/) || brackets.match(/\[\]/) || brackets.match(/\{\}/) || b1.match(/^\)/) || b2.match(/^\}/) || b3.match(/^\]/) || b1.match(/\(\(/) || b2.match(/\{\{/) || b3.match(/\[\[/) || value.match(/\(\)/) || value.match(/\{\}/) || value.match(/\[\]/)){
-													document.getElementById("status").innerHTML = "";
-													document.getElementById("result").innerHTML = '<font color="red">括弧の位置関係が不正です<br>小括弧、中括弧、大括弧の順に入れてください。</font>';
-												}else{
-													document.getElementById("status").innerHTML = "解析中...";
-											analyze(value);
-												}
-											}else{
-												document.getElementById("status").innerHTML = "";
-												document.getElementById("result").innerHTML = '<font color="red">括弧()の数が不正です</font>';
-											}
-										}else{
-											document.getElementById("status").innerHTML = "";
-											document.getElementById("result").innerHTML = '<font color="red">括弧[]の数が不正です</font>';
+						document.getElementById("result").innerHTML = '<font color="red">最初に*,×,/,÷が来ることは出来ません</font>';
+				} else {
+						if (value.match(/[\+\-\/\*\×\÷]+[\+\-\/\*\×\÷\)\}\]]+/)) {
+								document.getElementById("status").innerHTML = "";
+								document.getElementById("result").innerHTML = '<font color="red">計算記号が連続になっている、もしくは閉じ括弧に向けて計算記号が当てられている箇所が存在します。</font>';
+						} else {
+								var numbers = value.split(/\+|\-|\*|\/|÷|×|\(|\)|\[|\]|\{|\}/);
+								var i = 0;
+								var errors = [];
+								numbers.forEach(function(number, index) {
+										if (!(number.search(/^[0-9]+(\.[0-9]+)?$/) == 0 || number == "")) {
+												errors.push(number);
 										}
-									}else{
-										document.getElementById("status").innerHTML = "";
-										document.getElementById("result").innerHTML = '<font color="red">括弧{}の数が不正です</font>';
-									}
-								}
-							}
-						});
-					}
+										if (++i == numbers.length) {
+												if (errors.length > 0) {
+														document.getElementById("status").innerHTML = "";
+														document.getElementById("result").innerHTML = '<font color="red">不正な数字が含まれています</font><br>' + errors.join(", ");
+												} else {
+														if ((value.match(/\[/g) || []).length == (value.match(/\]/g) || []).length) {
+																if ((value.match(/\{/g) || []).length == (value.match(/\}/g) || []).length) {
+																		if ((value.match(/\(/g) || []).length == (value.match(/\)/g) || []).length) {
+																				var brackets = value.replace(/[0-9\.\+\-\/\*\×\÷]*/g, "");
+																				var b1 = value.replace(/[0-9\.\+\-\/\*\×\÷\{\}\[\]]*/g, "");
+																				var b2 = value.replace(/[0-9\.\+\-\/\*\×\÷\(\)\[\]]*/g, "");
+																				var b3 = value.replace(/[0-9\.\+\-\/\*\×\÷\(\)\{\}]*/g, "");
+																				if (brackets.match(/\[[\}\)]/) || brackets.match(/\{[\]\)\[]/) || brackets.match(/\([\}\}\{\{]/) || brackets.match(/\[\]/) || brackets.match(/\{\}/) || b1.match(/^\)/) || b2.match(/^\}/) || b3.match(/^\]/) || b1.match(/\(\(/) || b2.match(/\{\{/) || b3.match(/\[\[/) || value.match(/\(\)/) || value.match(/\{\}/) || value.match(/\[\]/)) {
+																						document.getElementById("status").innerHTML = "";
+																						document.getElementById("result").innerHTML = '<font color="red">括弧の位置関係が不正です<br>小括弧、中括弧、大括弧の順に入れてください。</font>';
+																				} else {
+																						document.getElementById("status").innerHTML = "解析中...";
+																						analyze(value);
+																				}
+																		} else {
+																				document.getElementById("status").innerHTML = "";
+																				document.getElementById("result").innerHTML = '<font color="red">括弧()の数が不正です</font>';
+																		}
+																} else {
+																		document.getElementById("status").innerHTML = "";
+																		document.getElementById("result").innerHTML = '<font color="red">括弧[]の数が不正です</font>';
+																}
+														} else {
+																document.getElementById("status").innerHTML = "";
+																document.getElementById("result").innerHTML = '<font color="red">括弧{}の数が不正です</font>';
+														}
+												}
+										}
+								});
+						}
 				}
-			}else{
+		} else {
 				document.getElementById("status").innerHTML = "";
 				document.getElementById("result").innerHTML = '<font color="red">不正な文字が含まれています</font><br>使用可能な文字: 1から9の半角数字, ., +, -, ×, ÷, *, /, (, ), {, }, [, ]';
-			}
 		}
-function analyze(formula){
- if(formula.match(/^[0-9]+\+[0-9]+$/))){
-  document.getElementById("result").innerHTML = addtion(formula.split(/\+/)[0], formula.split(/\+/)[1]);
- }else if(formula.match(/^\-[0-9]+\-[0-9]+$/)){
-  document.getElementById("result").innerHTML = subtraction(formula.split(/\+/)[0], formula.split(/\+/)[1]);
- }else{
-   document.getElementById("result").innerHTML = "開発中です";
- }
-/*
- if(formula.match(/\[/)){
-  var b3 = formula.split(/[^\]]*\[|\][^\[]*/);
-  var f1_test = [];
-  b3.forEach(function (f1, index) {
-   if(f1 != ""){
-    f1_test.push(f1);
-    document.getElementById("result").innerHTML = 'テスト結果<br>' + f1_test.join(", ");
-   }
-  });
- }
-*/
-}
-function addition(n1, n2){
- var result = "";
- var isFinished = false;
- var isCarry = false;
- var calc1 = String(n1);
- var calc2 = String(n2);
- if(calc1.match(/^[0-9]+(\.[0-9]+)?$/)){
-  if(calc1.match(/\./) || calc2.match(/\./)){
-   //小数
-  }else{
-   while(isFinished) {
-    if(calc1 == "" || calc2 == ""){
-     if(isCarry == true){
-      if(calc1 == ""){
-       while(isFinished){
-        var res = String(Number(calc2.slice(-1) + 1));
-        calc2 = sourceStr.slice(0, -1) ;
-        if(res > 9){
-         result = res + result;
-        }else{
-         result = String(calc2) + String(res) + result;
-         isCarry = false;
-         isFinished = true;
-        }
-       }
-      }else if(calc2 == ""){
-       while(isFinished){
-        var res = String(Number(calc1.slice(-1) + 1));
-        calc1 = calc1.slice(0, -1);
-        if(res > 9){
-         result = (res - 10) + result;
-        }else{
-         result = String(calc1) + String(res) + result;
-         isCarry = false;
-         isFinished = true;
-        }
-       }
-      }else{
-       if(isCarry){
-        result = "1" + result;
-        isCarry = false;
-       }
-       isFinished = true;
-      }
-     }else{
-      result = String(Number(calc1) + Number(calc2)) + result;
-     }
-    }else{
-      if(isCarry){
-       var res = Number(calc1.slice(-1)) + Number(calc2.slice(-1) + 1);
-      }else{
-       var res = Number(calc1.slice(-1)) + Number(calc2.slice(-1));
-      }
-      if(res > 9){
-       isCarry = true;
-       res = res - 10;
-      }
-      result = String(res) + result;
-     }
-    }
-   }
- }else{
-  return null;
- }
 }
 
-function subtraction(n1, n2){
- if(n1.match(/^-[0-9]+(.[0-9])*$/) && n2.match(/^-[0-9]+(.[0-9])*$/)){
-  return "-" + addition(n1.replace(/\-/,""), n2.replace(/\-/,""));
- }
+function analyze(formula) {
+		if (formula.match(/^[0-9]+\+[0-9]+$/)) {
+				document.getElementById("result").innerHTML = addition(formula.split(/\+/)[0], formula.split(/\+/)[1]);
+		} else if (formula.match(/^\-[0-9]+\-[0-9]+$/)) {
+				document.getElementById("result").innerHTML = subtraction(formula.split(/\+/)[0], formula.split(/\+/)[1]);
+		} else {
+				document.getElementById("result").innerHTML = "開発中です";
+		}
+		/*
+		 if(formula.match(/\[/)){
+
+			var f1_test = [];
+			b3.forEach(function (f1, index) {
+			 if(f1 != ""){
+				f1_test.push(f1);
+				document.getElementById("result").innerHTML = 'テスト結果<br>' + f1_test.join(", ");
+			 }
+			});
+		 }
+		*/
+}
+
+function addition(n1, n2) {
+		var result = "";
+		var res = "";
+		var isFinished = false;
+				var max = 0;
+		var isCarry = false;
+		var calc1 = String(n1);
+		var calc2 = String(n2);
+		if (calc1.match(/^[0-9]+(\.[0-9]+)?$/)) {
+				if (calc1.match(/\./) || calc2.match(/\./)) {
+						//小数
+				} else {
+						while (!isFinished) {
+							if(max++ > 10000){
+								isFinished = true;
+								return "処理回数を10000回を超えたため、処理を停止しました: " + result;
+							}
+								if (calc1 == "" || calc2 == "") {
+										if (isCarry == true) {
+												if (calc1 == "") {
+														while (!isFinished) {
+																console.log(res);
+																res = String(Number(calc2.slice(-1) + "1"));
+																calc2 = calc2.slice(0, -1);
+																if (res > 9) {
+																		result = res + result;
+																} else {
+																		result = String(calc2) + String(res) + result;
+																		isCarry = false;
+																		isFinished = true;
+																}
+														}
+												} else if (calc2 == "") {
+														while (!isFinished) {
+																res = Number(calc1.slice(-1) + "1");
+																calc1 = calc1.slice(0, -1);
+																if (res > 9) {
+																		result = (res - 10) + result;
+																} else {
+																		result = String(calc1) + String(res) + result;
+																		isCarry = false;
+																		isFinished = true;
+																}
+														}
+												} else {
+														if (isCarry) {
+																result = "1" + result;
+																isCarry = false;
+														}
+														console.log(res);
+														isFinished = true;
+												}
+										} else {
+												result = String(Number(calc1) + Number(calc2)) + result;
+										}
+								} else {
+										if (isCarry) {
+											  res = Number(calc1.slice(-1)) + Number(calc2.slice(-1) + "1");
+										} else {
+												res = Number(calc1.slice(-1)) + Number(calc2.slice(-1));
+										}
+										if (res > 9) {
+												isCarry = true;
+												res = res - 10;
+										}
+										result = String(res) + String(result);
+								}
+						}
+						return result;
+				}
+		} else {
+				return null;
+		}
+}
+
+function subtraction(n1, n2) {
+		if (n1.match(/^-[0-9]+(.[0-9])*$/) && n2.match(/^-[0-9]+(.[0-9])*$/)) {
+				return "-" + addition(n1.replace(/\-/, ""), n2.replace(/\-/, ""));
+		}
+}
+document.onkeydown = function(event){
+			if(event.keyCode == 13){
+				check();
+			}
 }
 	</script>
 </head>
